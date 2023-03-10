@@ -38,10 +38,11 @@ function gameBord() {
 }
 
 // function to animate the game
+let timeout;
 snakeAndBoard()
 function snakeAndBoard() {
 
-    setTimeout(() => { 
+   timeout= setTimeout(() => { 
         gameBord()           // all call back functions should be listed efficiently to make the game reacts properly
         gameOver()
         instanceMoveSnake()
@@ -153,7 +154,7 @@ function snakeGrowth() {
         snake.push(food)
         snakeMoveSpeed += 0.05 // increases the speed of the snake
         gameScore++ // increases score when snake ate food
-    }
+    } 
 }
 
 // Game Over
@@ -180,8 +181,8 @@ function headCollidesBody() {
         canvasContext.font = "50px cursive"
         canvasContext.strokeText(array[i], 400, 300 + 70 * i)
     }
-    food.x = -25 // clear food and snake from the screen when game over
-    snake[0].x = -25
+    food.x = {} // clear food and snake from the screen when game over
+    snake = []
 }
 
 // add score 
@@ -190,5 +191,21 @@ function score() {
     canvasContext.font = "20px cursive"
     canvasContext.strokeText(`Score: ${gameScore}`, 1125, 30)
 }
+
+// to pause the game with Space button and make it play by the Enter one on the keyboard 
+window.addEventListener('keydown', (e) => {
+    let gameStatus = "paused"
+    if(e.key === " " && gameStatus === "paused"){
+        clearTimeout(timeout)
+        canvasContext.fillStyle = 'red'
+        canvasContext.strokeStyle = "white"
+        canvasContext.font = "60px cursive"
+        canvasContext.fillText('Game Paused', 440, 335)
+        canvasContext.strokeText('Game Paused', 440, 335 )
+    }else if(e.key === "Enter"){
+        gameStatus = "playing"
+       snakeAndBoard()
+    }
+})
 
 //THANK YOU!!!
